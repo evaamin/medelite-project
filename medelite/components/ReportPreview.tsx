@@ -45,7 +45,7 @@ export function ReportPreview({ model }: { model: RenderModel }) {
               <div className="metric-label">{m.label}</div>
               <div className="metric-facility">{formatMetric(m.facility, m.unit)}</div>
               <div className="metric-bench">
-                <span>Nat'l {formatMetric(m.national, m.unit)}</span>
+                <span>Nat&apos;l {formatMetric(m.national, m.unit)}</span>
                 <span>State {formatMetric(m.state, m.unit)}</span>
               </div>
               {vs !== "unknown" && (
