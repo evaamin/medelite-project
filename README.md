@@ -144,4 +144,3 @@ under *Name of Facility*. See the comment in `components/BrandingBanner.tsx`.
 
 Next.js 14 (App Router) · TypeScript · `@react-pdf/renderer` · `docx` · Recharts.
 No database, no auth, no secrets.
-# medelite-project
