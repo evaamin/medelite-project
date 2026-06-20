@@ -1,0 +1,26 @@
+{
+  "name": "medelite-facility-report",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Facility Assessment Report Generator — INFINITE, managed by Medelite",
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint"
+  },
+  "dependencies": {
+    "@react-pdf/renderer": "^3.4.4",
+    "docx": "^8.5.0",
+    "next": "^14.2.35",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "recharts": "^2.12.7"
+  },
+  "devDependencies": {
+    "@types/node": "^20.14.0",
+    "@types/react": "^18.3.3",
+    "@types/react-dom": "^18.3.0",
+    "typescript": "^5.5.3"
+  }
+}
