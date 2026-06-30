@@ -22,7 +22,7 @@ database, and exports a print-ready **PDF** or an editable **Word** document.
 - [x] **Medicare source hyperlink** — clickable link in the PDF using the dynamic CCN.
 - [x] **Deployment** — one-command deploy to Vercel (see below).
 
-### Bonus features (all implemented)
+### Bonus features
 - [x] **All 12 hospitalization / ED metrics** — STR (short-stay) + LT (long-stay) hospitalization and ED rates, each with state and national averages.
 - [x] **Word (.docx) export** — editable document with the same layout and a working hyperlink.
 - [x] **Charts + data cards** — benchmark-aware metric cards (facility vs national vs state, colored by who's ahead) plus Recharts comparison charts.
@@ -39,8 +39,6 @@ npm run dev          # http://localhost:3000
 npm run build && npm run start
 ```
 
-No API keys or `.env` values are required — the CMS Provider Data Catalog is fully public.
-
 ---
 
 ## Deploy to Vercel
@@ -51,7 +49,7 @@ vercel            # follow the prompts; framework auto-detected as Next.js
 vercel --prod     # promote to a live URL
 ```
 
-Nothing else to configure. The CMS calls run inside the Next.js route handler,
+The CMS calls run inside the Next.js route handler,
 so there are no client-side CORS issues and no secrets to set.
 
 ---
@@ -100,43 +98,8 @@ Calls run server-side, so the browser never touches `data.cms.gov` directly.
 | LT ED Visit | CMS claims | *"outpatient emergency department visits per 1000 long-stay resident days"* |
 | STR/LT national & state averages | CMS State & US Averages | matching columns on the `NATION` row and the facility's state row |
 
-Per the brief: **STR → Short-Stay**, **LT → Long-Stay**. The verbose government
+**STR → Short-Stay**, **LT → Long-Stay**. The verbose government
 measure names are programmatically renamed to Medelite's clean labels.
-
----
-
-## Engineering assumptions
-
-Documented here per the brief ("make a reasonable assumption and document it").
-
-1. **CCN format** — accepted as 6 alphanumeric characters (CCNs are almost always
-   numeric but the 3rd position can be a letter), normalized to upper-case.
-2. **Facility metric value** — for the claims measures we display the
-   risk-**adjusted** score when present, falling back to the observed score. This
-   matches what Care Compare surfaces and keeps the facility comparable to the
-   risk-standardized state/national averages.
-3. **State & national averages** — the averages dataset has very long column names
-   that the CMS API truncates and hashes unpredictably. Rather than hard-code
-   fragile field names, the engine reads the response **schema** and resolves each
-   column by matching its human-readable description (keyword + stay type). This
-   survives upstream column renames and measure-code bumps.
-4. **Current Census** — true current census is an operational figure, not public
-   data, so it is a manual field, prefilled with the CMS average residents/day as
-   a convenient starting point.
-5. **Medicare link** — built as
-   `https://www.medicare.gov/care-compare/details/nursing-home/{CCN}/view-all?state={STATE}`
-   to match the sample target exactly.
-6. **Graceful degradation** — if the claims or averages sub-dataset is
-   unavailable, the report still renders (Provider Info is the only hard
-   dependency) and surfaces a non-blocking warning rather than failing.
-
----
-
-## Branding guardrail
-
-`INFINITE` is the static platform brand. It is **never** replaced by the CMS name
-or the manual override — the facility name appears only inside the report body
-under *Name of Facility*. See the comment in `components/BrandingBanner.tsx`.
 
 ---
 
